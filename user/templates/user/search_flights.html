@@ -1,0 +1,98 @@
+{% extends 'user/base.html' %}
+{% load static %}
+
+{% block title %}Search Flights{% endblock %}
+
+{% block content %}
+<div class="search-section">
+    <img src="{% static 'user/images/bg.jpg' %}"
+         class="user-bg-img" alt="Background">
+    <div class="user-overlay"></div>
+
+    <div class="search-content">
+
+        <div class="card search-card mb-5">
+            <div class="card-body p-4">
+                <h4 class="text-center mb-4" style="color:#ffd700;">🔍 Search Flights</h4>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row g-3">
+                        <div class="col-md-5">
+                            <label class="login-label">🛫 From City</label>
+                            <select name="from_city" class="form-control login-input" required>
+                                <option value="">-- Select From City --</option>
+                                {% for city in from_cities %}
+                                <option value="{{ city }}">{{ city }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-5">
+                            <label class="login-label">🛬 To City</label>
+                            <select name="to_city" class="form-control login-input" required>
+                                <option value="">-- Select To City --</option>
+                                {% for city in to_cities %}
+                                <option value="{{ city }}">{{ city }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn user-btn w-100">
+                                🔍 Search
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% if flights is not None %}
+            {% if flights %}
+            <div class="table-responsive">
+                <table class="table search-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Airline</th>
+                            <th>Flight No</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Departure</th>
+                            <th>Arrival</th>
+                            <th>Economy</th>
+                            <th>Business</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for flight in flights %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ flight.company_name }}</td>
+                            <td><span class="flight-badge">{{ flight.flight_number }}</span></td>
+                            <td>{{ flight.from_city }}</td>
+                            <td>{{ flight.destination_city }}</td>
+                            <td>{{ flight.from_city_departure_time }}</td>
+                            <td>{{ flight.destination_arrival_time }}</td>
+                            <td>₹{{ flight.economy_fare }}</td>
+                            <td>₹{{ flight.business_fare }}</td>
+                            <td>
+                                <a href="{% url 'user:book_flight' flight.id %}" class="btn user-btn"
+                                   style="padding: 6px 16px; font-size: 0.85rem;">
+                                    ✈️ Book Now
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center mt-4">
+                <p style="color: #fff; font-size: 1.2rem;">😔 No flights found! Try different cities.</p>
+            </div>
+            {% endif %}
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

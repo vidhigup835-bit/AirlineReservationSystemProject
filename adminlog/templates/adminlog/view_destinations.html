@@ -1,0 +1,53 @@
+{% extends 'adminlog/base.html' %}
+{% load static %}
+{% block title %}View Destinations{% endblock %}
+{% block content %}
+<div class="admin-content">
+    <div class="container-fluid py-4 px-4">
+        <h3 class="admin-form-title mb-4">🌍 All Destinations</h3>
+        {% if destinations %}
+        <div class="table-responsive">
+            <table class="table admin-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Image</th>
+                        <th>City</th>
+                        <th>Country</th>
+                        <th>Airport</th>
+                        <th>Code</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dest in destinations %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            <img src="{{ dest.image.url }}"
+                                 style="width:60px; height:40px; object-fit:cover; border-radius:6px;">
+                        </td>
+                        <td>{{ dest.city_name }}</td>
+                        <td>{{ dest.country }}</td>
+                        <td>{{ dest.airport_name }}</td>
+                        <td><span class="flight-badge">{{ dest.airport_code }}</span></td>
+                        <td>{{ dest.description|truncatechars:40 }}</td>
+                        <td>
+                            <a href="#" class="btn-action btn-edit">✏️ Edit</a>
+                            <a href="#" class="btn-action btn-delete">🗑️ Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="no-data">
+            <p>🌍 Koi destination nahi mili!</p>
+            <a href="{% url 'adminlog:adddestination' %}" class="btn login-btn mt-3">➕ Add Destination</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

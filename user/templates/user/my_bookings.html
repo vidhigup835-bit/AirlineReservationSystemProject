@@ -1,0 +1,57 @@
+{% extends 'user/base.html' %}
+{% load static %}
+
+{% block title %}My Bookings{% endblock %}
+
+{% block content %}
+<div class="search-section">
+    <img src="{% static 'user/images/bg.jpg' %}"
+         class="user-bg-img" alt="Background">
+    <div class="user-overlay"></div>
+
+    <div class="search-content">
+        <h3 style="color:#ffd700;" class="mb-4">📋 My Bookings</h3>
+
+        {% if bookings %}
+        <div class="table-responsive">
+            <table class="table search-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Flight No</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Seat Type</th>
+                        <th>Seats</th>
+                        <th>Passengers</th>
+                        <th>Total Fare</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><span class="flight-badge">{{ booking.flight.flight_number }}</span></td>
+                        <td>{{ booking.flight.from_city }}</td>
+                        <td>{{ booking.flight.destination_city }}</td>
+                        <td>{{ booking.seat_type|capfirst }}</td>
+                        <td>{{ booking.selected_seats }}</td>
+                        <td>{{ booking.passengers }}</td>
+                        <td style="color:#ffd700;">₹{{ booking.total_fare }}</td>
+                        <td>{{ booking.booking_date|date:"d M Y" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center mt-5">
+            <p style="color:#fff; font-size:1.2rem;">😔 No bookings yet!</p>
+            <a href="{% url 'user:search_flights' %}" class="btn user-btn mt-3">🔍 Search Flights</a>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'user/base.html' %}
+{% load static %}
+
+{% block title %}Booking Confirmed{% endblock %}
+
+{% block content %}
+<div class="search-section">
+    <img src="{% static 'user/images/bg.jpg' %}" class="user-bg-img" alt="Background">
+    <div class="user-overlay"></div>
+
+    <div class="search-content" style="display:flex; align-items:center; justify-content:center; min-height:80vh;">
+        <div class="card search-card text-center" style="max-width:600px; width:100%; padding: 20px;">
+            <div class="card-body p-4">
+
+                <!-- Checkmark Animation -->
+                <div class="confirm-icon">✅</div>
+
+                <h2 style="color:#ffd700; font-size:2rem; font-weight:800; margin:20px 0 10px;">
+                    🎉 Booking Confirmed!
+                </h2>
+                <p style="color:#aaa; font-size:1rem; margin-bottom:30px;">
+                    Your flight has been successfully booked.
+                </p>
+
+                <!-- Booking Details -->
+                <div style="background:rgba(255,215,0,0.05); border:1px solid rgba(255,215,0,0.2); border-radius:12px; padding:20px; margin-bottom:25px;">
+                    <div class="flight-detail-item">
+                        <span class="detail-label">✈️ Flight</span>
+                        <span class="detail-value">{{ booking.flight.flight_number }}</span>
+                    </div>
+                    <div class="flight-detail-item">
+                        <span class="detail-label">🛫 From</span>
+                        <span class="detail-value">{{ booking.flight.from_city }}</span>
+                    </div>
+                    <div class="flight-detail-item">
+                        <span class="detail-label">🛬 To</span>
+                        <span class="detail-value">{{ booking.flight.destination_city }}</span>
+                    </div>
+                    <div class="flight-detail-item">
+                        <span class="detail-label">📅 Travel Date</span>
+                        <span class="detail-value">{{ booking.travel_date }}</span>
+                    </div>
+                    <div class="flight-detail-item">
+                        <span class="detail-label">💺 Seat Type</span>
+                        <span class="detail-value">{{ booking.seat_type|capfirst }}</span>
+                    </div>
+                    <div class="flight-detail-item">
+                        <span class="detail-label">🪑 Seats</span>
+                        <span class="detail-value">{{ booking.selected_seats }}</span>
+                    </div>
+                    <div class="flight-detail-item">
+                        <span class="detail-label">👥 Passengers</span>
+                        <span class="detail-value">{{ booking.passengers }}</span>
+                    </div>
+                    <hr style="border-color:rgba(255,215,0,0.2);">
+                    <div class="flight-detail-item">
+                        <span class="detail-label" style="color:#ffd700; font-weight:700;">💰 Total Paid</span>
+                        <span class="detail-value" style="color:#ffd700; font-size:1.2rem;">₹{{ booking.total_fare }}</span>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex gap-3 justify-content-center">
+                    <a href="#" class="btn user-btn">
+                        📋 My Bookings
+                    </a>
+                    <a href="{% url 'user:home' %}" class="btn" style="background:transparent; border:2px solid #ffd700; color:#ffd700; border-radius:30px; padding:12px 25px; font-weight:700;">
+                        🏠 Home
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.confirm-icon {
+    font-size: 4rem;
+    animation: popIn 0.6s ease;
+}
+
+@keyframes popIn {
+    0%   { transform: scale(0); opacity: 0; }
+    70%  { transform: scale(1.2); }
+    100% { transform: scale(1); opacity: 1; }
+}
+</style>
+{% endblock %}

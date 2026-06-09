@@ -1,0 +1,203 @@
+{% extends 'user/base.html' %}
+{% load static %}
+
+{% block title %}Payment{% endblock %}
+
+{% block content %}
+<div class="search-section">
+    <img src="{% static 'user/images/bg.jpg' %}"
+         class="user-bg-img" alt="Background">
+    <div class="user-overlay"></div>
+
+    <div class="search-content">
+        <div class="row g-4 justify-content-center">
+
+            <!-- Left — Order Summary -->
+            <div class="col-md-4">
+                <div class="card search-card">
+                    <div class="card-body p-4">
+                        <h4 style="color:#ffd700;" class="mb-4">🧾 Order Summary</h4>
+
+                        <div class="flight-detail-item">
+                            <span class="detail-label">✈️ Flight</span>
+                            <span class="detail-value">{{ booking.flight.flight_number }}</span>
+                        </div>
+                        <div class="flight-detail-item">
+                            <span class="detail-label">🛫 From</span>
+                            <span class="detail-value">{{ booking.flight.from_city }}</span>
+                        </div>
+                        <div class="flight-detail-item">
+                            <span class="detail-label">🛬 To</span>
+                            <span class="detail-value">{{ booking.flight.destination_city }}</span>
+                        </div>
+                        <div class="flight-detail-item">
+                            <span class="detail-label">💺 Seat Type</span>
+                            <span class="detail-value">{{ booking.seat_type|capfirst }}</span>
+                        </div>
+                        <div class="flight-detail-item">
+                            <span class="detail-label">🪑 Seats</span>
+                            <span class="detail-value">{{ booking.selected_seats }}</span>
+                        </div>
+                        <div class="flight-detail-item">
+                            <span class="detail-label">👥 Passengers</span>
+                            <span class="detail-value">{{ booking.passengers }}</span>
+                        </div>
+                        <hr style="border-color:rgba(255,215,0,0.2);">
+                        <div class="flight-detail-item">
+                            <span class="detail-label" style="color:#ffd700; font-weight:700;">💰 Total</span>
+                            <span class="detail-value" style="color:#ffd700; font-size:1.2rem;">₹{{ booking.total_fare }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right — Payment Options -->
+            <div class="col-md-6">
+                <div class="card search-card">
+                    <div class="card-body p-4">
+                        <h4 style="color:#ffd700;" class="mb-4">💳 Payment</h4>
+
+                        <!-- Payment Tabs -->
+                        <div class="payment-tabs mb-4">
+                            <button class="payment-tab active" onclick="showTab('card')">💳 Card</button>
+                            <button class="payment-tab" onclick="showTab('upi')">📱 UPI</button>
+                            <button class="payment-tab" onclick="showTab('netbanking')">🏦 Net Banking</button>
+                        </div>
+
+                        <form method="POST" action="{% url 'user:payment' booking.id %}">
+                            {% csrf_token %}
+
+                            <!-- Card Payment -->
+                            <div id="card-tab">
+                                <div class="payment-card-preview mb-4">
+                                    <div class="card-preview">
+                                        <div class="card-chip">💳</div>
+                                        <div class="card-number-display" id="card-display">**** **** **** ****</div>
+                                        <div class="d-flex justify-content-between">
+                                            <span class="card-name-display" id="name-display">YOUR NAME</span>
+                                            <span class="card-expiry-display" id="expiry-display">MM/YY</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="login-label">Card Number</label>
+                                    <input type="text" name="card_number"
+                                           class="form-control login-input"
+                                           placeholder="1234 5678 9012 3456"
+                                           maxlength="19"
+                                           oninput="formatCard(this)"
+                                           id="card-input">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="login-label">Card Holder Name</label>
+                                    <input type="text" name="card_name"
+                                           class="form-control login-input"
+                                           placeholder="John Doe"
+                                           oninput="document.getElementById('name-display').textContent = this.value || 'YOUR NAME'">
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="login-label">Expiry Date</label>
+                                        <input type="text" name="expiry"
+                                               class="form-control login-input"
+                                               placeholder="MM/YY" maxlength="5"
+                                               oninput="document.getElementById('expiry-display').textContent = this.value || 'MM/YY'">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="login-label">CVV</label>
+                                        <input type="password" name="cvv"
+                                               class="form-control login-input"
+                                               placeholder="***" maxlength="3">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- UPI Payment -->
+                            <div id="upi-tab" style="display:none;">
+                                <div class="text-center mb-4">
+                                    <div class="upi-logo">📱</div>
+                                    <p style="color:#aaa;">Pay using any UPI app</p>
+                                    <div class="upi-apps mb-3">
+                                        <span class="upi-app">GPay</span>
+                                        <span class="upi-app">PhonePe</span>
+                                        <span class="upi-app">Paytm</span>
+                                        <span class="upi-app">BHIM</span>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="login-label">UPI ID</label>
+                                    <input type="text" name="upi_id"
+                                           class="form-control login-input"
+                                           placeholder="yourname@upi">
+                                </div>
+                            </div>
+
+                            <!-- Net Banking -->
+                            <div id="netbanking-tab" style="display:none;">
+                                <div class="mb-3">
+                                    <label class="login-label">Select Bank</label>
+                                    <select name="bank" class="form-control login-input">
+                                        <option value="">-- Select Bank --</option>
+                                        <option>State Bank of India</option>
+                                        <option>HDFC Bank</option>
+                                        <option>ICICI Bank</option>
+                                        <option>Axis Bank</option>
+                                        <option>Kotak Mahindra Bank</option>
+                                        <option>Punjab National Bank</option>
+                                        <option>Bank of Baroda</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="login-label">User ID</label>
+                                    <input type="text" name="bank_userid"
+                                           class="form-control login-input"
+                                           placeholder="Enter Net Banking User ID">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="login-label">Password</label>
+                                    <input type="password" name="bank_password"
+                                           class="form-control login-input"
+                                           placeholder="Enter Password">
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="payment_method" id="payment_method" value="card">
+
+                            <div class="d-grid mt-4">
+                                <button type="submit" class="btn user-btn" style="font-size:1.1rem;">
+                                    🔒 Pay ₹{{ booking.total_fare }}
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function showTab(tab) {
+        document.getElementById('card-tab').style.display = 'none';
+        document.getElementById('upi-tab').style.display = 'none';
+        document.getElementById('netbanking-tab').style.display = 'none';
+        document.getElementById(tab + '-tab').style.display = 'block';
+        document.getElementById('payment_method').value = tab;
+
+        document.querySelectorAll('.payment-tab').forEach(t => t.classList.remove('active'));
+        event.target.classList.add('active');
+    }
+
+    function formatCard(input) {
+        let value = input.value.replace(/\D/g, '').substring(0, 16);
+        let formatted = value.match(/.{1,4}/g)?.join(' ') || value;
+        input.value = formatted;
+        document.getElementById('card-display').textContent = formatted || '**** **** **** ****';
+    }
+</script>
+
+{% endblock %}

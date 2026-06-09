@@ -1,0 +1,85 @@
+{% extends 'adminlog/base.html' %}
+{% load static %}
+{% block title %}Add Flight{% endblock %}
+{% block content %}
+<div class="admin-content">
+    <div class="container py-5">
+        <div class="admin-form-card">
+            <h3 class="admin-form-title">✈️ Add Flight</h3>
+            <div class="divider mb-4"></div>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="admin-label">🏢 Company Name</label>
+                        {{ form.company_name }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="admin-label">✈️ Flight Name</label>
+                        {{ form.flight_name }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="admin-label"># Flight Number</label>
+                        {{ form.flight_number }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="admin-label">📅 Total Days</label>
+                        {{ form.total_days }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="admin-label">🛫 From City</label>
+                        {{ form.from_city }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="admin-label">🛬 Destination City</label>
+                        {{ form.destination_city }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="admin-label">🕐 From City Arrival Time</label>
+                        {{ form.from_city_arrival_time }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="admin-label">🕐 From City Departure Time</label>
+                        {{ form.from_city_departure_time }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="admin-label">🕐 Destination Arrival Time</label>
+                        {{ form.destination_arrival_time }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="admin-label">🕐 Destination Departure Time</label>
+                        {{ form.destination_departure_time }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="admin-label">💼 Total Business Seats</label>
+                        {{ form.total_business_seats }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="admin-label">💺 Total Economy Seats</label>
+                        {{ form.total_economy_seats }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="admin-label">₹ Business Seat Fare</label>
+                        {{ form.business_fare }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="admin-label">₹ Economy Seat Fare</label>
+                        {{ form.economy_fare }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="admin-label">🖼️ Flight Image</label>
+                        {{ form.flight_image }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="admin-label">📍 Airport Name</label>
+                        {{ form.airport_name }}
+                    </div>
+                </div>
+                <div class="mt-4 d-grid">
+                    <button type="submit" class="btn login-btn">➕ Add Flight</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'adminlog/base.html' %}
+{% load static %}
+
+{% block title %}Feedback{% endblock %}
+
+{% block content %}
+<div class="admin-content">
+    <div class="container-fluid py-4 px-4">
+        <h3 class="admin-form-title mb-4">💬 All Feedbacks</h3>
+
+        {% if feedbacks %}
+        <div class="table-responsive">
+            <table class="table admin-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>User</th>
+                        <th>Subject</th>
+                        <th>Message</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for fb in feedbacks %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><span class="flight-badge">{{ fb.user.username }}</span></td>
+                        <td>{{ fb.subject }}</td>
+                        <td>{{ fb.message|truncatechars:60 }}</td>
+                        <td>{{ fb.created_at|date:"d M Y" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="no-data">
+            <p>💬 Koi feedback nahi mila abhi!</p>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

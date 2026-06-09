@@ -1,0 +1,56 @@
+{% extends 'adminlog/base.html' %}
+{% load static %}
+{% block title %}View Flights{% endblock %}
+{% block content %}
+<div class="admin-content">
+    <div class="container-fluid py-4 px-4">
+        <h3 class="admin-form-title mb-4">✈️ All Flights</h3>
+        {% if flights %}
+        <div class="table-responsive">
+            <table class="table admin-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Company</th>
+                        <th>Flight No</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Economy Fare</th>
+                        <th>Business Fare</th>
+                        <th>Seats</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for flight in flights %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ flight.company_name }}</td>
+                        <td><span class="flight-badge">{{ flight.flight_number }}</span></td>
+                        <td>{{ flight.from_city }}</td>
+                        <td>{{ flight.destination_city }}</td>
+                        <td>{{ flight.from_city_departure_time }}</td>
+                        <td>{{ flight.destination_arrival_time }}</td>
+                        <td>₹{{ flight.economy_fare }}</td>
+                        <td>₹{{ flight.business_fare }}</td>
+                        <td>{{ flight.total_economy_seats }}</td>
+                        <td>
+                            <a href="#" class="btn-action btn-edit">✏️ Edit</a>
+                            <a href="#" class="btn-action btn-delete">🗑️ Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="no-data">
+            <p>✈️ Koi flight nahi mili!</p>
+            <a href="{% url 'adminlog:addflight' %}" class="btn login-btn mt-3">➕ Add Flight</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

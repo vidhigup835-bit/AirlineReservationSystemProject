@@ -1,0 +1,275 @@
+{% extends 'user/base.html' %}
+{% load static %}
+
+{% block title %}Book Flight{% endblock %}
+
+{% block content %}
+<div class="search-section">
+    <img src="{% static 'user/image/aero.jpg' %}"
+         class="user-bg-img" alt="Background">
+    <div class="user-overlay"></div>
+
+    <div class="search-content">
+        <div class="row g-4">
+
+            <!-- Left Side — Flight Details -->
+            <div class="col-md-5">
+                <div class="card search-card h-100">
+                    <div class="card-body p-4">
+                        <h4 style="color:#ffd700;" class="mb-4">✈️ Flight Details</h4>
+                        <div class="flight-detail-item">
+                            <span class="detail-label">🏢 Airline</span>
+                            <span class="detail-value">{{ flight.company_name }}</span>
+                        </div>
+                        <div class="flight-detail-item">
+                            <span class="detail-label"># Flight No</span>
+                            <span class="detail-value">{{ flight.flight_number }}</span>
+                        </div>
+                        <div class="flight-detail-item">
+                            <span class="detail-label">🛫 From</span>
+                            <span class="detail-value">{{ flight.from_city }}</span>
+                        </div>
+                        <div class="flight-detail-item">
+                            <span class="detail-label">🛬 To</span>
+                            <span class="detail-value">{{ flight.destination_city }}</span>
+                        </div>
+                        <div class="flight-detail-item">
+                            <span class="detail-label">🕐 Departure</span>
+                            <span class="detail-value">{{ flight.from_city_departure_time }}</span>
+                        </div>
+                        <div class="flight-detail-item">
+                            <span class="detail-label">🕐 Arrival</span>
+                            <span class="detail-value">{{ flight.destination_arrival_time }}</span>
+                        </div>
+                        <div class="flight-detail-item">
+                            <span class="detail-label">📍 Airport</span>
+                            <span class="detail-value">{{ flight.airport_name }}</span>
+                        </div>
+                        <hr style="border-color: rgba(255,215,0,0.2);">
+                        <div class="flight-detail-item">
+                            <span class="detail-label">💺 Economy Fare</span>
+                            <span class="detail-value" style="color:#ffd700;">₹{{ flight.economy_fare }}</span>
+                        </div>
+                        <div class="flight-detail-item">
+                            <span class="detail-label">💼 Business Fare</span>
+                            <span class="detail-value" style="color:#ffd700;">₹{{ flight.business_fare }}</span>
+                        </div>
+
+                        <!-- Legend -->
+                        <div class="mt-4">
+                            <h6 style="color:#ffd700;">Legend:</h6>
+                            <div class="d-flex gap-3 mt-2">
+                                <div class="d-flex align-items-center gap-1">
+                                    <div class="legend-box available"></div>
+                                    <span style="color:#ccc; font-size:0.8rem;">Available</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-1">
+                                    <div class="legend-box booked"></div>
+                                    <span style="color:#ccc; font-size:0.8rem;">Booked</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-1">
+                                    <div class="legend-box selected"></div>
+                                    <span style="color:#ccc; font-size:0.8rem;">Selected</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side — Seat Map + Booking -->
+            <div class="col-md-7">
+                <div class="card search-card">
+                    <div class="card-body p-4">
+                        <h4 style="color:#ffd700;" class="mb-3">🎫 Select Your Seat</h4>
+
+                        <!-- Seat Type Toggle -->
+                        <div class="d-flex gap-3 mb-4">
+                            <button type="button" class="btn seat-type-btn active" id="economy-btn"
+                                    onclick="showSeats('economy')">
+                                💺 Economy — ₹{{ flight.economy_fare }}
+                            </button>
+                            <button type="button" class="btn seat-type-btn" id="business-btn"
+                                    onclick="showSeats('business')">
+                                💼 Business — ₹{{ flight.business_fare }}
+                            </button>
+                        </div>
+
+                        <!-- Airplane Body -->
+                        <div class="airplane-body">
+
+                            <!-- Cockpit -->
+                            <div class="cockpit">
+                                <div class="cockpit-nose">✈️ FRONT</div>
+                            </div>
+
+                            <!-- Column Labels -->
+                            <div class="seat-columns-label">
+                                <span>A</span>
+                                <span>B</span>
+                                <span>C</span>
+                                <span class="aisle"></span>
+                                <span>D</span>
+                                <span>E</span>
+                                <span>F</span>
+                            </div>
+
+                            <!-- Economy Seats -->
+                            <div id="economy-seats" class="seats-container">
+                                <p style="color:#ffd700; font-size:0.8rem; text-align:center;" class="mb-2">— Economy Class —</p>
+                                {% for row in economy_rows %}
+                                <div class="seat-row">
+                                    <span class="row-number">{{ forloop.counter }}</span>
+                                    {% for seat in row %}
+                                    <div class="seat {% if seat.booked %}booked{% else %}available{% endif %}"
+                                         data-seat="{{ seat.name }}"
+                                         data-type="economy"
+                                         onclick="selectSeat(this)">
+                                        {{ seat.name }}
+                                    </div>
+                                    {% if forloop.counter == 3 %}
+                                    <div class="aisle-gap"></div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                {% endfor %}
+                            </div>
+
+                            <!-- Business Seats -->
+                            <div id="business-seats" class="seats-container" style="display:none;">
+                                <p style="color:#ffd700; font-size:0.8rem; text-align:center;" class="mb-2">— Business Class —</p>
+                                {% for row in business_rows %}
+                                <div class="seat-row">
+                                    <span class="row-number">{{ forloop.counter }}</span>
+                                    {% for seat in row %}
+                                    <div class="seat {% if seat.booked %}booked{% else %}available{% endif %}"
+                                         data-seat="{{ seat.name }}"
+                                         data-type="business"
+                                         onclick="selectSeat(this)">
+                                        {{ seat.name }}
+                                    </div>
+                                    {% if forloop.counter == 3 %}
+                                    <div class="aisle-gap"></div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+                        <!-- Booking Form -->
+                        <form method="POST" id="booking-form" class="mt-4">
+                            {% csrf_token %}
+                            <input type="hidden" name="seat_type" id="seat_type_input" value="economy">
+                            <input type="hidden" name="selected_seats" id="selected_seats_input">
+                            <input type="hidden" name="passengers" id="passengers_input" value="0">
+
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <label class="login-label">📅 Travel Date</label>
+                                    <input type="date" name="travel_date"
+                                        class="form-control login-input"
+                                        min="{{ today }}"
+                                        required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="login-label">🪑 Selected Seats</label>
+                                    <input type="text" id="selected_seats_display"
+                                           class="form-control login-input"
+                                           placeholder="Click seats to select" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="login-label">💰 Total Fare</label>
+                                    <input type="text" id="total_fare"
+                                           class="form-control login-input"
+                                           value="₹0" readonly>
+                                </div>
+                            </div>
+
+                            <div class="d-grid mt-3">
+                                <button type="submit" class="btn user-btn">
+                                    ✅ Confirm Booking
+                                </button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <!-- Date Field — NAYA ADD KARO -->
+    <div class="col-md-12">
+        <label class="login-label">📅 Travel Date</label>
+        <input type="date" name="travel_date"
+               class="form-control login-input"
+               min="{{ today }}"
+               required>
+    </div>
+    
+    <div class="col-md-6">
+        <label class="login-label">🪑 Selected Seats</label>
+        ...
+    </div>
+</div>
+
+<script>
+    let selectedSeats = [];
+    let currentType = 'economy';
+    const economyFare = {{ flight.economy_fare }};
+    const businessFare = {{ flight.business_fare }};
+
+    function showSeats(type) {
+        currentType = type;
+        selectedSeats = [];
+        updateDisplay();
+
+        document.getElementById('economy-seats').style.display = type === 'economy' ? 'block' : 'none';
+        document.getElementById('business-seats').style.display = type === 'business' ? 'block' : 'none';
+
+        document.getElementById('economy-btn').classList.toggle('active', type === 'economy');
+        document.getElementById('business-btn').classList.toggle('active', type === 'business');
+
+        document.getElementById('seat_type_input').value = type;
+
+        // Deselect all
+        document.querySelectorAll('.seat.selected').forEach(s => {
+            s.classList.remove('selected');
+            s.classList.add('available');
+        });
+    }
+
+    function selectSeat(el) {
+        if (el.classList.contains('booked')) return;
+
+        const seat = el.dataset.seat;
+
+        if (el.classList.contains('selected')) {
+            el.classList.remove('selected');
+            el.classList.add('available');
+            selectedSeats = selectedSeats.filter(s => s !== seat);
+        } else {
+            el.classList.remove('available');
+            el.classList.add('selected');
+            selectedSeats.push(seat);
+        }
+        updateDisplay();
+    }
+
+    function updateDisplay() {
+        const fare = currentType === 'economy' ? economyFare : businessFare;
+        const total = fare * selectedSeats.length;
+
+        document.getElementById('selected_seats_display').value = selectedSeats.join(', ') || 'None';
+        document.getElementById('total_fare').value = '₹' + total.toFixed(2);
+        document.getElementById('selected_seats_input').value = selectedSeats.join(',');
+        document.getElementById('passengers_input').value = selectedSeats.length;
+    }
+</script>
+
+{% endblock %}

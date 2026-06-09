@@ -1,0 +1,50 @@
+{% extends 'user/base.html' %}
+{% load static %}
+
+{% block title %}Feedback{% endblock %}
+
+{% block content %}
+<div class="search-section">
+    <img src="{% static 'user/images/bg.jpg' %}"
+         class="user-bg-img" alt="Background">
+    <div class="user-overlay"></div>
+
+    <div class="search-content" style="max-width:600px;">
+        <div class="card search-card">
+            <div class="card-body p-4">
+                <h4 style="color:#ffd700;" class="mb-4">💬 Give Feedback</h4>
+                <div style="width:60px; height:3px; background:#ffd700; border-radius:2px;" class="mb-4"></div>
+
+                {% if success %}
+                <div class="alert alert-success text-center">
+                    ✅ Feedback submitted successfully!
+                </div>
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="login-label">📝 Subject</label>
+                        <input type="text" name="subject"
+                               class="form-control login-input"
+                               placeholder="Enter subject" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="login-label">💬 Message</label>
+                        <textarea name="message"
+                                  class="form-control login-input"
+                                  rows="5"
+                                  placeholder="Write your feedback..." required></textarea>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn user-btn">
+                            🚀 Submit Feedback
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

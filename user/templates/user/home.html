@@ -1,0 +1,31 @@
+{% extends 'user/base.html' %}
+{% load static %}
+
+{% block title %}Welcome - FlightDeck{% endblock %}
+
+{% block content %}
+
+<div class="user-home-section">
+
+    <!-- Background Image -->
+    <img src="{% static 'user/images/bg.jpg' %}"
+         class="user-bg-img" alt="Flight Background">
+
+    <!-- Overlay -->
+    <div class="user-overlay"></div>
+
+    <!-- Content -->
+    <div class="user-home-content">
+        <div class="text-center">
+            <p class="user-welcome">Welcome Back,</p>
+            <h1 class="user-name">{{ request.user.first_name }} {{ request.user.last_name }} ✈️</h1>
+            <div class="user-divider"></div>
+            <p class="user-quote">"The world is a book, and those who do not travel read only one page."</p>
+            <p class="user-quote-author">— Saint Augustine</p>
+            <a href="{% url 'user:search_flights' %}" class="btn user-btn mt-4">🔍 Search Flights</a>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% load static %}
+
+<nav class="admin-navbar">
+    <div class="admin-nav-container">
+        
+        <a class="admin-brand" href="#">
+            ✈️ FlightDeck Admin
+        </a>
+
+        <ul class="admin-nav-links">
+            <li><a href="{% url 'adminlog:dashboard' %}"  class="admin-nav-link active">📊 Dashboard</a></li>
+            <li><a href="{% url 'adminlog:viewusers' %}" class="admin-nav-link">👥 View Users</a></li>
+            <li><a href="{% url 'adminlog:adddestination' %}" class="admin-nav-link">➕ Add Destination</a></li>
+            <li><a href="{% url 'adminlog:viewdestinations' %}" class="admin-nav-link">🌍 View Destinations</a></li>
+            <li><a href="{% url 'adminlog:addflight' %}" class="admin-nav-link">➕ Add Flight</a></li>
+            <li><a href="{% url 'adminlog:viewflight' %}" class="admin-nav-link">✈️ View Flights</a></li>
+            <li><a href="{% url 'adminlog:allbookings' %}" class="admin-nav-link">📋 All Bookings</a></li>
+            <li><a href="{% url 'adminlog:feedback' %}" class="admin-nav-link">💬 Feedback</a></li>
+        </ul>
+
+        <div class="admin-profile">
+            <a href="{% url 'dashboard:logout' %}" style="text-decoration:none;">
+                <span class="profile-circle">PS</span>
+            </a>
+        </div>
+
+    </div>
+</nav>

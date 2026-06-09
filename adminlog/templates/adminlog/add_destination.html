@@ -1,0 +1,45 @@
+{% extends 'adminlog/base.html' %}
+{% load static %}
+{% block title %}Add Destination{% endblock %}
+{% block content %}
+<div class="admin-content">
+    <div class="container py-5">
+        <div class="admin-form-card">
+            <h3 class="admin-form-title">🌍 Add Destination</h3>
+            <div class="divider mb-4"></div>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="admin-label">🏙️ City Name</label>
+                        {{ form.city_name }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="admin-label">🌐 Country</label>
+                        {{ form.country }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="admin-label">✈️ Airport Name</label>
+                        {{ form.airport_name }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="admin-label">🔤 Airport Code</label>
+                        {{ form.airport_code }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="admin-label">🖼️ City Image</label>
+                        {{ form.image }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="admin-label">📝 Description</label>
+                        {{ form.description }}
+                    </div>
+                </div>
+                <div class="mt-4 d-grid">
+                    <button type="submit" class="btn login-btn">➕ Add Destination</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+
+{% extends 'adminlog/base.html' %}
+{% load static %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="dashboard-hero">
+    <img src="{% static 'adminlog/image/aero.jpg' %}" class="dashboard-bg-img" alt="Flight Background">
+    <div class="dashboard-overlay"></div>
+    <div class="dashboard-buttons">
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-5">
+                <a href="{% url 'adminlog:addflight' %}" class="dash-btn btn-blue">➕ Add Flight</a>
+            </div>
+            <div class="col-md-5">
+                <a href="{% url 'adminlog:viewflight' %}" class="dash-btn btn-red">✈️ View Flights</a>
+            </div>
+            <div class="col-md-5">
+                <a href="{% url 'adminlog:viewusers' %}" class="dash-btn btn-blue">👥 View Users</a>
+            </div>
+            <div class="col-md-5">
+                <a href="{% url 'adminlog:allbookings' %}" class="dash-btn btn-red">📋 View Bookings</a>
+            </div>
+            <div class="col-md-5">
+                <a href="{% url 'adminlog:adddestination' %}" class="dash-btn btn-blue">➕ Add Destination</a>
+            </div>
+            <div class="col-md-5">
+                <a href="{% url 'adminlog:feedback' %}" class="dash-btn btn-red">💬 View Feedback</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'adminlog/base.html' %}
+{% load static %}
+{% block title %}All Bookings{% endblock %}
+{% block content %}
+<div class="admin-content">
+    <div class="container-fluid py-4 px-4">
+        <h3 class="admin-form-title mb-4">📋 All Bookings</h3>
+        {% if bookings %}
+        <div class="table-responsive">
+            <table class="table admin-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>User</th>
+                        <th>Flight No</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Seat Type</th>
+                        <th>Seats</th>
+                        <th>Passengers</th>
+                        <th>Total Fare</th>
+                        <th>Booking Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><span class="flight-badge">{{ booking.user.username }}</span></td>
+                        <td>{{ booking.flight.flight_number }}</td>
+                        <td>{{ booking.flight.from_city }}</td>
+                        <td>{{ booking.flight.destination_city }}</td>
+                        <td>{{ booking.seat_type|capfirst }}</td>
+                        <td>{{ booking.selected_seats }}</td>
+                        <td>{{ booking.passengers }}</td>
+                        <td style="color:#ffd700;">₹{{ booking.total_fare }}</td>
+                        <td>{{ booking.booking_date|date:"d M Y" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="no-data">
+            <p>📋 Koi booking nahi hui abhi!</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

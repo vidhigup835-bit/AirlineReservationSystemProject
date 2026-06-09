@@ -1,0 +1,44 @@
+{% extends 'adminlog/base.html' %}
+{% load static %}
+{% block title %}View Users{% endblock %}
+{% block content %}
+<div class="admin-content">
+    <div class="container-fluid py-4 px-4">
+        <h3 class="admin-form-title mb-4">👥 Registered Users</h3>
+        {% if users %}
+        <div class="table-responsive">
+            <table class="table admin-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Username</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Joined</th>
+                        <th>Last Login</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><span class="flight-badge">{{ user.username }}</span></td>
+                        <td>{{ user.first_name }}</td>
+                        <td>{{ user.last_name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.date_joined|date:"d M Y" }}</td>
+                        <td>{{ user.last_login|date:"d M Y" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="no-data">
+            <p>👥 Koi user register nahi hua abhi!</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
