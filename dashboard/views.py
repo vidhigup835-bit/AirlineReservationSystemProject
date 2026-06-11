@@ -78,7 +78,7 @@ def user_login(request):
         
         if user is not None:
             auth_login(request, user)
-            return redirect('dashboard:home')  # login ke baad home pe jayega
+            return redirect('user:home')  # login ke baad home pe jayega
         else:
             error = 'Invalid username or password!'
     

@@ -24,7 +24,11 @@
                 <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:about' %}">About</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:register' %}">Register</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:login' %}">Login</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:adminlogin' %}">Admin</a></li>
+                
+                {% if user.is_superuser %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:adminlogin' %}">Admin</a></li>
+                {% endif %}
+
               </ul>
             </div>
           </div>
