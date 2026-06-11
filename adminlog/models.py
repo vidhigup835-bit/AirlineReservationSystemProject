@@ -16,7 +16,7 @@ class Flight(models.Model):
     total_economy_seats = models.IntegerField()
     business_fare = models.DecimalField(max_digits=10, decimal_places=2)
     economy_fare = models.DecimalField(max_digits=10, decimal_places=2)
-    flight_image = models.ImageField(upload_to='flights/')
+    flight_image = models.ImageField(upload_to='flights/', blank=True, null=True)
     airport_name = models.CharField(max_length=100)
 
     def __str__(self):

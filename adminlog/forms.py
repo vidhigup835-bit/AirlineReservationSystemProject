@@ -32,8 +32,8 @@ class DestinationForm(forms.ModelForm):
         widgets = {
             'city_name': forms.TextInput(attrs={'class': 'form-control admin-input', 'placeholder': 'e.g. Mumbai'}),
             'country': forms.TextInput(attrs={'class': 'form-control admin-input', 'placeholder': 'e.g. India'}),
-            'airport_name': forms.TextInput(attrs={'class': 'form-control admin-input', 'placeholder': 'e.g. Chhatrapati Shivaji Airport'}),
+            'airport_name': forms.TextInput(attrs={'class': 'form-control admin-input', 'placeholder': 'Enter Airport Name'}),
             'airport_code': forms.TextInput(attrs={'class': 'form-control admin-input', 'placeholder': 'e.g. BOM'}),
-            'image': forms.ClearableFileInput(attrs={'class': 'form-control admin-input'}),
+            'image': forms.ClearableFileInput(attrs={'class': 'form-control admin-input' }),
             'description': forms.Textarea(attrs={'class': 'form-control admin-input', 'rows': 3, 'placeholder': 'City description...'}),
         }
